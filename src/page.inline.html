@@ -1,0 +1,904 @@
+<title>Curso na Pasta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Herói sobre areia quente. A capa escura com a foto da instrutora é o único
+   bloco de alto contraste da tela e carrega a cor.
+
+   Tudo aqui sai de duas escalas: uma de espaço (passo de 4px) e uma de corpo.
+   Nada recebe um valor avulso; se um espaço não cabe na escala, o problema é
+   o espaço, não a escala. */
+:root{
+  --sand:#E9E0D0; --paper:#F5F2EC;
+  --ink:#1B1B1B; --ink-2:#4A4A4A; --ink-3:#696457;
+  /* dois dourados: --gold vale para preenchimento e texto grande (3,01:1
+     sobre a areia); texto pequeno exige 4,5:1 e usa --gold-ink. O dourado
+     claro original dava 2,23:1 e sumia em tela de celular sob o sol. */
+  --gold:#9D7B3E; --gold-ink:#7B6030; --gold-2:#C2A46B; --champ:#D4B98C;
+  --dark:#0B0A09; --cream:#F3ECE0;
+
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:32px; --s6:56px;
+
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* um só tratamento para toda etiqueta em caixa alta (peso, caixa e
+     entreletra); dentro do mockup só o corpo muda, porque lá ele acompanha
+     o tamanho do conjunto */
+  --t-label:10px; --t-micro:12px; --t-body:clamp(15px,1.45vw,16.5px);
+  --d-sm:clamp(21px,4.4vw,25px); --d-xl:clamp(34px,7.8vw,52px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--body);
+  -webkit-font-smoothing:antialiased}
+.label{font-size:var(--t-label);font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;line-height:1}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--dark);
+  color:var(--cream);border-bottom:1px solid #241f17;display:flex;align-items:center;
+  justify-content:space-between;gap:var(--s2);padding:var(--s2) var(--s3)}
+.bar .nome,.bar .preco{font-family:var(--display);font-size:17.5px;line-height:1;
+  white-space:nowrap}
+.bar .nome{display:flex;align-items:center;gap:9px}
+/* a marca vive em 26px na barra: abaixo disso o ponto dourado some */
+.mk{height:26px;width:auto;flex:none;display:block}
+@media(max-width:399px){.mk{height:23px}}
+.bar .nome em{font-style:italic;color:var(--champ)}
+.bar .dir{display:flex;align-items:center;gap:var(--s3);min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--gold);
+  color:#17120A;font-family:var(--body);font-weight:600;font-size:15px;letter-spacing:.02em;
+  padding:var(--s3) var(--s4);border:0;border-radius:2px;text-decoration:none;cursor:pointer;
+  min-height:56px;transition:background .18s ease,transform .18s ease}
+.btn:hover{background:#AE8A48}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.bar .btn{padding:var(--s2) var(--s3);font-size:13px;min-height:42px;white-space:nowrap}
+@media(max-width:430px){.bar{padding:9px var(--s3);gap:var(--s1)}
+  .bar .nome,.bar .preco{font-size:17px}.bar .btn{padding:var(--s2) 13px;font-size:12.5px}}
+/* Em tela estreita os tres elementos da barra nao cabem e a pagina inteira
+   ganha rolagem lateral. O nome do produto agora vive só aqui: sair ele é
+   ficar sem nome na primeira tela. Então quem encolhe é o botão — primeiro
+   de tamanho, depois de texto. O preço também fica: no celular o botão
+   grande está fora da primeira tela e a barra é o único lugar onde o valor
+   aparece sem rolar. */
+.bar .btn .curto{display:none}
+@media(max-width:399px){.bar{padding:9px var(--s2);gap:var(--s1)}
+  .bar .nome,.bar .preco{font-size:16px}.bar .nome{gap:7px}
+  .bar .dir{gap:var(--s2)}
+  .bar .btn{padding:var(--s2) 11px;font-size:12px}
+  .bar .btn .longo{display:none}.bar .btn .curto{display:inline}}
+
+.hero{padding-block:clamp(28px,5vw,var(--s6));padding-inline:var(--s3)}
+/* No celular a ordem é headline, mockup, botão: a prova visual tem de chegar
+   antes da decisão. No desktop o mockup ocupa a coluna direita inteira e o
+   botão volta para baixo do texto. */
+.wrap{max-width:1180px;margin:0 auto;display:grid;row-gap:var(--s5);
+  grid-template-columns:1fr}
+@media(min-width:920px){
+  .wrap{grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr);
+    grid-template-areas:"texto mock" "acao mock";
+    column-gap:var(--s6);row-gap:28px;align-items:start}
+  .texto{grid-area:texto}
+  .acao{grid-area:acao}
+  .mock{grid-area:mock;align-self:center}
+}
+/* Coluna centrada, no modelo da Zenah. O botao centralizado sozinho, sob
+   texto alinhado a esquerda, leria como erro: ou centra tudo, ou nada. Texto
+   centrado pede medida mais curta, entao a coluna estreita de 33 para 30rem. */
+.texto,.acao{max-width:30rem;margin-inline:auto;text-align:center}
+
+/* O nome do produto vive só na barra fixa, ao lado do símbolo. Aqui em cima
+   fica a etiqueta que qualifica quem está lendo, centrada com a coluna. */
+.kicker{margin:0 0 var(--s4);display:flex;justify-content:center}
+.kicker .by{color:var(--ink-3)}
+/* Sem max-width própria: quem quebra a linha é a medida da coluna. */
+h1{font-family:var(--display);font-weight:400;margin:0;font-size:var(--d-xl);
+  line-height:1.05;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){h1{text-wrap:balance}}
+h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
+.rule{width:56px;height:2px;background:var(--gold);margin:var(--s4) auto var(--s3)}
+.sub{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);margin:0}
+.sub b{color:var(--ink);font-weight:600}
+.cta{display:flex;flex-direction:column;align-items:center;gap:var(--s3)}
+.cta .btn{width:100%}
+@media(min-width:560px){.cta .btn{width:auto;padding-inline:var(--s6)}}
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s1) var(--s3);
+  font-size:var(--t-micro);color:var(--ink-3)}
+.trust span{display:inline-flex;align-items:center;gap:var(--s1)}
+.trust i{width:4px;height:4px;border-radius:50%;background:var(--gold);font-style:normal}
+/* Saida para quem ainda nao decidiu: sem ela, a unica alternativa ao botao
+   e fechar a aba. */
+.ver{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--ink-2);
+  text-decoration:none;border-bottom:1px solid var(--hair);padding-bottom:3px}
+.ver:hover{color:var(--ink);border-color:var(--gold)}
+.ver span{color:var(--gold);font-size:15px;line-height:1}
+
+/* Conjunto do herói: a capa ao centro e três páginas internas reais em volta,
+   giradas e sobrepostas. Tudo dentro dele é dimensionado em cqw, ou seja, em
+   porcentagem do próprio conjunto: assim a capa tem exatamente as mesmas
+   proporções no celular e no desktop, em vez de encolher o texto antes da
+   imagem. */
+.mock{display:flex;justify-content:center}
+/* no celular o conjunto ocupa a mesma medida da coluna de texto, para as
+   duas metades da dobra dividirem a mesma calha */
+.cluster{position:relative;width:min(560px,100%);aspect-ratio:1/.9;
+  container-type:inline-size}
+@media(min-width:920px){.cluster{width:100%;max-width:560px}}
+.pc{position:absolute;display:block;background:#fff;height:auto;
+  box-shadow:0 10px 26px rgba(40,32,18,.22),0 2px 6px rgba(40,32,18,.12)}
+.pc.plano{width:37%;left:4%;top:7%;transform:rotate(-7deg);z-index:2}
+.pc.mapa{width:34%;right:2%;top:5%;transform:rotate(8deg);z-index:1}
+.pc.cert{width:39%;right:1%;bottom:4%;transform:rotate(5deg);z-index:4}
+
+.capa{position:absolute;width:44%;left:26%;top:12%;z-index:3;transform:rotate(-2deg);
+  aspect-ratio:1/1.414;background:var(--dark);overflow:hidden;
+  box-shadow:0 20px 44px rgba(40,32,18,.4),0 4px 10px rgba(40,32,18,.22)}
+.capa .cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 12%;display:block}
+/* degradê que segura o texto sem tapar o rosto */
+.capa .scrim{position:absolute;inset:0;background:linear-gradient(to bottom,
+  rgba(11,10,9,.28) 0%,rgba(11,10,9,0) 22%,rgba(11,10,9,.5) 46%,
+  rgba(11,10,9,.92) 66%,#0B0A09 80%)}
+.capa .moldura{position:absolute;inset:4.5%;border:.75px solid rgba(212,185,140,.45);
+  pointer-events:none}
+.capa .lombada{position:absolute;left:0;top:0;bottom:0;width:9%;z-index:4;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.22) 42%,rgba(0,0,0,0) 100%)}
+.capa .txt{position:absolute;left:11%;right:9%;bottom:10%;text-align:center;z-index:3}
+.capa .mk{font-size:clamp(6px,1.3cqw,7.5px);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--champ);font-weight:600;line-height:1}
+.capa .tit{font-family:var(--display);font-size:clamp(13px,3.3cqw,19px);line-height:1.1;
+  color:#fff;margin-top:8%;letter-spacing:.005em}
+.capa .hr{width:22%;height:1px;background:var(--gold-2);margin:8% auto 7%}
+.capa .nm{font-family:var(--display);font-style:italic;
+  font-size:clamp(9px,2.1cqw,12.5px);line-height:1;color:var(--champ)}
+.selo{position:absolute;right:0;top:-5%;z-index:6;width:clamp(72px,15cqw,88px);
+  aspect-ratio:1;border-radius:50%;background:var(--gold);color:#17120A;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(120,90,30,.35)}
+.selo b{font-family:var(--display);font-size:clamp(21px,4.4cqw,27px);line-height:1;
+  font-weight:500}
+.selo span{font-size:clamp(6px,1.3cqw,7.5px);letter-spacing:.2em;text-transform:uppercase;
+  margin-top:3px;font-weight:600;line-height:1}
+
+/* ------------------------------------------------------------------ 01 dor
+   Faixa escura: a página alterna areia e preto para marcar capítulo, e o
+   preto é o mesmo das capas do kit. A dobra promete "dê o seu próprio curso"
+   sem nomear o obstáculo; esta seção completa a frase que a leitora já está
+   pensando, e nomeia logística, não incompetência. */
+.dor{background:var(--dark);color:var(--cream);
+  padding:clamp(56px,9vw,104px) var(--s3);
+  /* a barra é sticky: sem esta folga o salto por âncora esconde a etiqueta
+     da seção atrás dela */
+  scroll-margin-top:76px}
+.dor .col{max-width:1060px;margin:0 auto}
+.dor .cab{max-width:34rem;margin:0 auto;text-align:center}
+.dor .num{color:var(--champ);display:block;margin-bottom:var(--s4)}
+.dor h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.dor h2{text-wrap:balance}}
+.dor .lede{font-size:var(--t-body);line-height:1.6;color:#AAA59B;
+  margin:var(--s4) 0 0}
+.cards{display:grid;gap:var(--s3);margin-top:clamp(32px,5vw,var(--s6))}
+@media(min-width:760px){.cards{grid-template-columns:repeat(3,1fr);gap:var(--s4)}}
+.card{border:1px solid #2A2219;padding:var(--s4)}
+.card .i{font-family:var(--display);font-style:italic;font-size:21px;
+  color:var(--champ);line-height:1;display:block;margin-bottom:var(--s3)}
+.card p{margin:0;font-size:14.5px;line-height:1.65;color:#C4BEB2}
+.tese{max-width:30rem;margin:clamp(32px,5vw,var(--s6)) auto 0;text-align:center}
+.tese .rule{background:var(--gold-2);margin-top:0}
+.tese p{font-family:var(--display);font-size:var(--d-sm);line-height:1.3;
+  margin:0;color:var(--cream)}
+.tese em{font-style:italic;color:var(--champ)}
+
+/* ------------------------------------------------------------- faixa de fatos
+   Costura entre a dobra clara e a seção escura. Mesma função da faixa animada
+   da Zenah, sem o movimento: animação infinita compete com a leitura e teria
+   de se desligar em prefers-reduced-motion. Aqui só entra número verificado,
+   nunca adjetivo: a faixa é inventário, não elogio. */
+.fatos{background:var(--paper);border-block:1px solid #D8D3CA;
+  padding:var(--s3) var(--s3)}
+.fatos ul{list-style:none;margin:0 auto;padding:0;max-width:1060px;
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:var(--s2) var(--s4);font-size:var(--t-micro);color:var(--ink-3)}
+.fatos li{display:inline-flex;align-items:center;gap:var(--s2);white-space:nowrap}
+.fatos li::before{content:"";width:3px;height:3px;border-radius:50%;
+  background:var(--gold-2);flex:none}
+.fatos b{color:var(--ink);font-weight:600}
+@media(max-width:560px){.fatos ul{gap:var(--s1) var(--s3)}}
+
+/* --------------------------------------------------------- 02 o que resolve
+   Resposta trava por trava, na mesma ordem da seção anterior: a leitora
+   acabou de concordar três vezes e cada concordância se fecha enquanto está
+   quente. A prova não é um mockup genérico, é uma página real do Guia: o
+   título promete que o curso já está planejado e a imagem é o planejamento.
+   Fundo papel, para alternar com o preto da seção anterior. */
+.res{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.res .col{max-width:1060px;margin:0 auto}
+.res .cab{max-width:34rem;margin:0 auto;text-align:center}
+.res .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.res h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.res h2{text-wrap:balance}}
+.res .lede{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);
+  margin:var(--s4) 0 0}
+
+.dupla{display:grid;gap:clamp(32px,5vw,var(--s6));
+  margin-top:clamp(32px,5vw,var(--s6));align-items:start}
+@media(min-width:920px){.dupla{grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:var(--s6)}
+  /* o texto encurtou e a imagem continua alta: centrar a coluna faz a
+     diferença de altura ler como respiro, não como sobra */
+  .dupla .resp{align-self:center}}
+
+.folha figure{margin:0}
+.folha img{display:block;width:100%;height:auto;background:#fff;
+  border:1px solid #E2DCD1;box-shadow:0 18px 40px -24px rgba(27,27,27,.45)}
+.folha figcaption{margin-top:var(--s3);font-size:var(--t-micro);
+  color:var(--ink-3);text-align:center}
+/* a seção afirma que existe um plano de aula e não dizia quem o escreveu:
+   autoridade colada na afirmação, que é onde ela trabalha */
+.folha figcaption span{display:block;margin-top:var(--s1);color:var(--gold-ink);
+  font-weight:600}
+
+.resp > div + div{margin-top:var(--s5)}
+.resp h3{font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:var(--d-sm);line-height:1.1;color:var(--gold-ink);margin:0 0 var(--s2)}
+.resp p{margin:0;font-size:var(--t-body);line-height:1.65;color:var(--ink-2)}
+
+.res .saida{display:flex;justify-content:center;margin-top:var(--s5)}
+/* botão secundário: leva para o inventário, não para o pagamento. Quem está
+   nesta altura ainda avalia; o botão de compra continua na barra fixa. */
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;color:var(--ink);font-family:var(--body);font-weight:600;
+  font-size:14.5px;letter-spacing:.02em;padding:var(--s3) var(--s5);
+  border:1px solid var(--gold);border-radius:2px;text-decoration:none;
+  min-height:52px;transition:background .18s ease,color .18s ease}
+.btn2:hover{background:var(--gold);color:#17120A}
+.btn2:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.btn2 span{color:var(--gold-ink);font-size:16px;line-height:1}
+.btn2:hover span{color:#17120A}
+
+/* ------------------------------------------------------- 03 o que vem na pasta
+   Inventário organizado por quem recebe, não por "principal e bônus". A coluna
+   da direita é o argumento: mostra que o kit cobre o curso inteiro, da
+   professora à cliente da aluna. As seis capas são as capas reais dos
+   arquivos, não mockup. Fundo areia, para alternar com o papel da seção
+   anterior. */
+.pasta{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.pasta .col{max-width:1060px;margin:0 auto}
+.pasta .cab{max-width:34rem;margin:0 auto;text-align:center}
+.pasta .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.pasta h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.pasta h2{text-wrap:balance}}
+.pasta .lede{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);
+  margin:var(--s4) 0 0}
+
+ /* Um objeto, um bloco: a capa carrega embaixo o próprio nome, as páginas e
+   para quem vai. Antes a lista vinha em tabela separada e repetia os seis
+   títulos que já estavam impressos nas capas. */
+.itens{display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(24px,4vw,var(--s5)) var(--s3);margin-top:clamp(32px,5vw,var(--s6))}
+@media(min-width:560px){.itens{grid-template-columns:repeat(3,1fr);
+  column-gap:var(--s4);max-width:920px;margin-inline:auto}}
+.itens figure{margin:0}
+.itens img{display:block;width:100%;height:auto;
+  box-shadow:0 12px 28px -18px rgba(27,27,27,.55)}
+.itens figcaption{margin-top:var(--s3)}
+.itens b{display:block;font-family:var(--display);font-weight:500;
+  font-size:clamp(17px,2.1vw,20px);line-height:1.15;color:var(--ink)}
+.itens span{display:block;margin-top:5px;font-size:var(--t-micro);
+  color:var(--ink-3);line-height:1.35}
+/* o Guia é o único item que não vai para a aluna: a assimetria é o argumento,
+   então ela recebe cor em vez de ficar igual às outras cinco */
+.itens span.so{color:var(--gold-ink);font-weight:600}
+
+
+ /* Os dois editáveis não são capa de imprimir: entram como anexo, com
+   tratamento próprio, para não lerem como sobra da grade. */
+.anexo{max-width:920px;margin:clamp(32px,5vw,var(--s6)) auto 0;
+  border-top:1px solid #D5CCBA;padding-top:var(--s4);text-align:center}
+.anexo .label{display:block;color:var(--ink-3);margin-bottom:var(--s3)}
+.anexo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
+  justify-content:center;gap:var(--s2) var(--s5);font-size:var(--t-body);
+  color:var(--ink-3)}
+.anexo li b{color:var(--ink);font-weight:600;margin-right:7px}
+.anexo p{margin:var(--s3) 0 0;font-size:var(--t-micro);color:var(--ink-3)}
+/* Sullivan e Whitman no mesmo bloco: devolve o resultado depois da lista de
+   características e explica o preço antes de pedi-lo. Volume sem justificativa
+   de preço lê como produto barato, não como oportunidade. */
+.fecho{max-width:34rem;margin:clamp(32px,5vw,var(--s6)) auto 0;text-align:center}
+.fecho p{margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)}
+.fecho b{color:var(--ink);font-weight:600}
+.pasta .saida{display:flex;justify-content:center;margin-top:var(--s5)}
+
+/* ----------------------------------------------------------- 04 por dentro
+   154 páginas é um número que convida à suspeita de enchimento. Esta seção
+   existe para matar essa suspeita com três páginas reais, uma de cada
+   material, e cada legenda nomeia o que aquela página prova. Fundo preto:
+   papel claro sobre preto é como se apresenta documento. */
+.dentro{background:var(--dark);color:var(--cream);
+  padding:clamp(56px,9vw,104px) var(--s3);scroll-margin-top:76px}
+.dentro .col{max-width:1060px;margin:0 auto}
+.dentro .cab{max-width:34rem;margin:0 auto;text-align:center}
+.dentro .num{color:var(--champ);display:block;margin-bottom:var(--s4)}
+.dentro h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.dentro h2{text-wrap:balance}}
+.dentro .lede{font-size:var(--t-body);line-height:1.6;color:#AAA59B;
+  margin:var(--s4) 0 0}
+.folhas{display:grid;gap:clamp(32px,5vw,var(--s5));
+  margin-top:clamp(32px,5vw,var(--s6))}
+@media(min-width:760px){.folhas{grid-template-columns:repeat(3,1fr);
+  gap:var(--s4)}}
+.folhas figure{margin:0}
+.folhas img{display:block;width:100%;height:auto;
+  box-shadow:0 20px 44px -26px rgba(0,0,0,.9)}
+.folhas figcaption{margin-top:var(--s3)}
+.folhas b{display:block;font-size:var(--t-label);font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--champ);
+  line-height:1.4}
+.folhas span{display:block;margin-top:var(--s2);font-size:14px;line-height:1.6;
+  color:#C4BEB2}
+/* esta é a última prova antes da oferta: quem se convence aqui precisa de
+   saída sem ter de rolar a seção inteira seguinte */
+.dentro .saida{display:flex;justify-content:center;
+  margin-top:clamp(32px,5vw,var(--s6))}
+
+/* ------------------------------------------------------------- 05 a oferta
+   É o destino de todos os botões da página, então precisa ler como destino.
+   Em vez de inventar um vocabulário novo, inverte o existente: é a única
+   seção com um objeto ESCURO sobre fundo claro, no mesmo preto das capas do
+   kit. O fundo volta para a areia da dobra e fecha o ciclo da página.
+   Sem empilhamento de valor fictício: todo número aqui se confere. */
+.oferta{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.oferta .col{max-width:1060px;margin:0 auto}
+.oferta .cab{max-width:34rem;margin:0 auto;text-align:center}
+.oferta .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.oferta h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.oferta h2{text-wrap:balance}}
+.oferta .lede{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);
+  margin:var(--s4) 0 0}
+
+.inclui{max-width:720px;margin:clamp(32px,5vw,var(--s6)) auto 0;
+  list-style:none;padding:0;display:grid;gap:var(--s3)}
+@media(min-width:620px){.inclui{grid-template-columns:1fr 1fr;
+  column-gap:var(--s5)}}
+.inclui li{display:grid;grid-template-columns:auto 1fr;gap:var(--s2);
+  font-size:15.5px;line-height:1.45;color:var(--ink-2)}
+.inclui li::before{content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--gold);margin-top:.55em}
+.inclui b{color:var(--ink);font-weight:600}
+
+/* ancoragem de esforço, sem valor inventado: o contraponto do preço é o
+   trabalho que ele substitui, não um "de R$1.200 por R$47" */
+.esforco{max-width:34rem;margin:var(--s5) auto 0;text-align:center;
+  font-size:var(--t-body);line-height:1.65;color:var(--ink-2)}
+.esforco b{color:var(--ink);font-weight:600}
+
+.cartao{max-width:30rem;margin:clamp(32px,5vw,var(--s6)) auto 0;
+  background:var(--dark);color:var(--cream);border:1px solid var(--gold-2);
+  padding:var(--s6) var(--s4) var(--s5);text-align:center}
+.cartao .sel{height:44px;width:auto;display:block;margin:0 auto var(--s4)}
+.cartao .conv{font-size:var(--t-micro);color:var(--champ);margin:0 0 var(--s3);
+  line-height:1.5}
+.cartao .val{font-family:var(--display);font-size:clamp(52px,10vw,72px);
+  line-height:1;color:var(--cream)}
+.cartao .cond{margin:var(--s2) 0 var(--s5);font-size:var(--t-micro);
+  color:#AAA59B;line-height:1.5}
+.cartao .btn{width:100%}
+.cartao .gar{margin:var(--s4) 0 0;font-size:13.5px;line-height:1.6;
+  color:#C4BEB2}
+.cartao .gar b{color:var(--cream);font-weight:600}
+.cartao .ace{margin:var(--s2) 0 0;font-size:var(--t-micro);color:#AAA59B}
+
+/* ------------------------------------------------------------ 06 quem assina
+   Sem prova social, autoridade é o que a substitui (Cialdini). E a autoridade
+   aqui não é só "quem ela é": é como o material foi construído. Dizer que o
+   plano saiu das turmas presenciais dela seria falso, e é verificável numa
+   pergunta. O que é verdade, e nenhum concorrente faz, é ter fonte com data. */
+.quem{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.quem .col{max-width:1060px;margin:0 auto;display:grid;
+  gap:clamp(32px,5vw,var(--s6))}
+@media(min-width:860px){.quem .col{grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
+  column-gap:var(--s6);align-items:center}}
+.quem img{display:block;width:100%;height:auto;
+  box-shadow:0 20px 44px -28px rgba(27,27,27,.5)}
+.quem .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.quem h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.05;letter-spacing:-.005em}
+.quem .cargo{margin:var(--s3) 0 0;font-family:var(--display);font-style:italic;
+  font-size:var(--d-sm);line-height:1.3;color:var(--gold-ink)}
+.quem .rule{margin:var(--s4) 0}
+@media(min-width:860px){.quem .rule{margin-inline:0}}
+.quem p.t{margin:0 0 var(--s4);font-size:var(--t-body);line-height:1.7;
+  color:var(--ink-2)}
+.quem p.t:last-of-type{margin-bottom:0}
+.quem b{color:var(--ink);font-weight:600}
+.quem .ig{margin:var(--s4) 0 0;font-size:var(--t-micro);color:var(--ink-3)}
+
+/* ------------------------------------------------ 07 objeções · 08 perguntas
+   As duas juntas de propósito: metade das perguntas de um FAQ são objeções
+   disfarçadas, e escrever separado gera repetição. As três objeções que travam
+   a decisão ficam em prosa; o resto vira pergunta curta em acordeão nativo,
+   sem javascript. */
+.obj{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.obj .col{max-width:1060px;margin:0 auto}
+.obj .cab,.faq .cab{max-width:34rem;margin:0 auto;text-align:center}
+.obj .num,.faq .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.obj h2,.faq h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.obj h2,.faq h2{text-wrap:balance}}
+.trava{display:grid;gap:clamp(32px,5vw,var(--s5));
+  margin-top:clamp(32px,5vw,var(--s6))}
+@media(min-width:860px){.trava{grid-template-columns:repeat(3,1fr);gap:var(--s5)}}
+.trava h3{font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:var(--d-sm);line-height:1.2;color:var(--ink);margin:0 0 var(--s3)}
+.trava p{margin:0;font-size:15.5px;line-height:1.65;color:var(--ink-2)}
+.trava b{color:var(--ink);font-weight:600}
+
+.faq{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
+  scroll-margin-top:76px}
+.faq .col{max-width:720px;margin:0 auto}
+.faq .lista{margin-top:clamp(32px,5vw,var(--s6));border-top:1px solid #D8D3CA}
+.faq details{border-bottom:1px solid #D8D3CA}
+.faq summary{list-style:none;cursor:pointer;padding:var(--s4) 32px var(--s4) 0;
+  position:relative;font-size:16.5px;line-height:1.4;color:var(--ink);font-weight:500}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:50%;
+  transform:translateY(-50%);font-size:20px;line-height:1;color:var(--gold-ink)}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:focus-visible{outline:2px solid var(--gold-ink);outline-offset:2px}
+.faq .resp{margin:0;padding:0 32px var(--s4) 0;font-size:15.5px;line-height:1.7;
+  color:var(--ink-2)}
+
+/* --------------------------------------------------- 09 fechamento · rodapé
+   O título fecha o laço da dobra: lá a promessa era "dê o seu próprio curso,
+   falta só o seu nome nele"; aqui o que falta é a data. O PS carrega a única
+   escassez honesta que a página tem, que é ser a primeira edição. */
+.fim{background:var(--dark);color:var(--cream);
+  padding:clamp(64px,10vw,120px) var(--s3) clamp(56px,9vw,104px);text-align:center}
+.fim .col{max-width:34rem;margin:0 auto}
+.fim h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.06;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.fim h2{text-wrap:balance}}
+.fim .rule{margin:var(--s5) auto var(--s4);background:var(--gold-2)}
+.fim p.t{margin:0 0 var(--s5);font-size:var(--t-body);line-height:1.7;color:#C4BEB2}
+.fim p.t b{color:var(--cream);font-weight:600}
+.fim .btn{width:100%}
+@media(min-width:560px){.fim .btn{width:auto;padding-inline:var(--s6)}}
+.fim .trust{margin-top:var(--s4);color:#AAA59B}
+.fim .ps{margin:clamp(40px,6vw,var(--s6)) auto 0;max-width:30rem;
+  border-top:1px solid #2A2219;padding-top:var(--s4);font-size:14.5px;
+  line-height:1.7;color:#AAA59B;text-align:left}
+.fim .ps b{color:var(--champ);font-weight:600}
+
+.rodape{background:var(--dark);color:#868279;border-top:1px solid #241f17;
+  padding:var(--s5) var(--s3);font-size:12.5px;line-height:1.7}
+.rodape .col{max-width:760px;margin:0 auto;text-align:center}
+.rodape .mk{height:22px;width:auto;margin:0 auto var(--s3);display:block}
+.rodape .nome{font-family:var(--display);font-size:16px;color:var(--cream);
+  margin:0 0 var(--s1)}
+.rodape .nome em{font-style:italic;color:var(--champ)}
+.rodape p{margin:0 0 var(--s3)}
+.rodape p:last-child{margin-bottom:0}
+.rodape .legal{font-size:11.5px;color:#6E6A62}
+
+/* ------------------------------------------------------------ whatsapp
+   Bolha no preto do kit em vez do verde oficial: o glifo já identifica o
+   serviço e o verde brigaria com a paleta inteira. Fica abaixo da barra fixa
+   na ordem de empilhamento e respeita a área segura do iPhone. */
+.zap{position:fixed;z-index:25;right:max(var(--s3),env(safe-area-inset-right));
+  bottom:max(var(--s3),env(safe-area-inset-bottom));
+  width:54px;height:54px;border-radius:50%;background:var(--dark);
+  border:1px solid var(--gold-2);display:flex;align-items:center;
+  justify-content:center;box-shadow:0 10px 26px -10px rgba(11,10,9,.6);
+  transition:background .18s ease,transform .18s ease}
+.zap svg{width:25px;height:25px;fill:var(--cream)}
+.zap:hover{background:#1a1713;transform:translateY(-1px)}
+.zap:active{transform:translateY(0)}
+.zap:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media(min-width:920px){.zap{width:58px;height:58px}.zap svg{width:27px;height:27px}}
+</style>
+
+<header class="bar">
+  <div class="nome"><svg class="mk" viewBox="0 0 360 328" aria-hidden="true"><path d="M 20 54 A 34 34 0 0 1 54 20 L 152 20 C 166 20 172 28 180 40 C 188 52 192 60 206 60 L 327 60 A 32 32 0 0 1 359 92 L 359 275 A 32 32 0 0 1 327 307 L 54 307 A 34 34 0 0 1 20 273 Z" fill="#F3ECE0"/><path d="M 52 112 C 57.3 112.3 70.7 111.8 84.0 114.0 C 97.3 116.2 118.7 121.0 132.0 125.0 C 145.3 129.0 153.3 133.0 164.0 138.0 C 174.7 143.0 185.3 148.5 196.0 155.0 C 206.7 161.5 217.3 167.8 228.0 177.0 C 238.7 186.2 249.3 197.0 260.0 210.0 C 270.7 223.0 282.7 240.0 292.0 255.0 C 301.3 270.0 312.0 292.5 316.0 300.0 L 320 307 C 315.3 302.0 302.0 288.3 292.0 277.0 C 282.0 265.7 270.7 250.0 260.0 239.0 C 249.3 228.0 238.7 219.5 228.0 211.0 C 217.3 202.5 206.7 194.5 196.0 188.0 C 185.3 181.5 174.7 176.7 164.0 172.0 C 153.3 167.3 145.3 163.5 132.0 160.0 C 118.7 156.5 97.3 152.8 84.0 151.0 C 70.7 149.2 57.3 149.3 52.0 149.0 C 40 149 30 140 30 130 C 30 119 40 112 52 112 Z" fill="#0B0A09"/><circle cx="20" cy="112" r="20" fill="#C9A06C"/></svg><span>Curso na <em>Pasta</em></span></div>
+  <div class="dir">
+    <div class="preco">R$47</div>
+    <a class="btn" href="#oferta"><span class="longo">Quero dar o meu curso</span><span class="curto">Quero a pasta</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="texto">
+      <p class="kicker"><span class="by label">Para quem vai dar aula</span></p>
+      <h1>Dê o seu próprio curso de sobrancelhas.
+        <span class="it">Falta só o seu nome nele.</span></h1>
+      <div class="rule"></div>
+      <p class="sub"><b>154 páginas prontas para imprimir, encadernar e levar para a sala.</b>
+        As capas, as fichas e os certificados você personaliza no Canva com a sua marca.</p>
+    </div>
+
+    <div class="mock">
+      <div class="cluster">
+        <img class="pc mapa" src="img/hero-mapa.jpg" alt="Abertura do modulo de design com henna">
+        <img class="pc plano" src="img/hero-plano.jpg" alt="Plano da aula hora a hora">
+        <div class="capa">
+          <img class="cv" src="img/hero-capa.jpg" alt="Capa da apostila com a instrutora">
+          <div class="scrim"></div>
+          <div class="lombada"></div>
+          <div class="moldura"></div>
+          <div class="txt">
+            <div class="mk label">Fabrise Academy</div>
+            <div class="tit">Apostila de<br>Sobrancelhas</div>
+            <div class="hr"></div>
+            <div class="nm">Fabrise Souza</div>
+          </div>
+        </div>
+        <img class="pc cert" src="img/hero-cert.jpg" alt="Modelo de certificado">
+        <div class="selo"><b>154</b><span class="label">páginas</span></div>
+      </div>
+    </div>
+
+    <div class="acao">
+      <div class="cta">
+        <a class="btn" href="#oferta">Quero o Curso na Pasta &middot; R$47</a>
+        <a class="ver" href="#conteudo">Ver tudo o que vem na pasta <span>&rsaquo;</span></a>
+        <div class="trust">
+          <span><i></i>Acesso imediato</span>
+          <span><i></i>7 dias de garantia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fatos" aria-label="O que vem no kit, em números">
+  <ul>
+    <li><b>154</b> páginas</li>
+    <li><b>6</b> arquivos para imprimir</li>
+    <li><b>2</b> editáveis no Canva</li>
+    <li><b>5</b> módulos</li>
+    <li><b>16</b> folhas de treino</li>
+    <li><b>10</b> modelos de certificado</li>
+  </ul>
+</section>
+
+<section class="dor" id="dor">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">01 &nbsp;/&nbsp; O que trava</span>
+      <h2>Você sabe fazer. Dar aula é outra história.</h2>
+      <p class="lede">Quase toda profissional de sobrancelhas já pensou em abrir
+        uma turma. O que trava raramente é a técnica.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><span class="i">i.</span>
+        <p>Você pensa em marcar uma data e para na primeira pergunta: quantas horas
+          tem o curso? Quantos dias? Quanto cobrar?</p></div>
+      <div class="card"><span class="i">ii.</span>
+        <p>Você faz a henna de olhos fechados. Mas o que a aluna faz nas horas em
+          que você não está falando?</p></div>
+      <div class="card"><span class="i">iii.</span>
+        <p>No fim, ela pede o certificado. E vem junto a pilha de papel que ninguém
+          te ensinou a fazer: ficha, termo, avaliação.</p></div>
+    </div>
+
+    <div class="tese">
+      <div class="rule"></div>
+      <p>O que falta não é técnica. <em>É o plano de aula, a apostila e o
+        certificado, nessa ordem.</em></p>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="resolve">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">02 &nbsp;/&nbsp; O que resolve</span>
+      <h2>Você não monta o curso. Escolhe qual vai dar.</h2>
+      <p class="lede">Os cinco módulos se combinam em cinco cursos prontos, de 25 a 57
+        horas. O plano de cada aula já está escrito, hora a hora.</p>
+    </div>
+
+    <div class="dupla">
+      <div class="folha">
+        <figure>
+          <img src="img/guia-plano.jpg"
+               alt="Página do Guia da Instrutora com o plano da aula 1 hora a hora" width="1000" height="1048" loading="lazy" decoding="async">
+          <figcaption>Página 4 do Guia da Instrutora. O plano da aula 1, hora a hora.
+            <span>Escrito por Fabrise Souza, especialista na técnica Shadow,
+            com estúdio em São Paulo.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="resp">
+        <div>
+          <h3>O plano de aula</h3>
+          <p>Escolha um dos cinco e marque a data. O Guia impresso traz a aula inteira
+            hora a hora: o que acontece às 0:00, às 3:00, no almoço e às 7:45.</p>
+        </div>
+        <div>
+          <h3>As 16 folhas de treino</h3>
+          <p>Mapeamento, traçado, simetria, leitura do fio, degradê por camadas. É o
+            que a aluna faz de caneta na mão. O gabarito de todas fica no seu Guia,
+            não no caderno dela.</p>
+        </div>
+        <div>
+          <h3>As fichas e os certificados</h3>
+          <p>Anamnese, termo de consentimento, ficha técnica, checklist, orientações de
+            pós e dez modelos de certificado. As normas citadas no material vêm com
+            artigo e data de conferência. Nada para você redigir na véspera da aula.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="saida">
+      <a class="btn2" href="#conteudo">Ver os seis arquivos <span>&rsaquo;</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="pasta" id="conteudo">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">03 &nbsp;/&nbsp; O que vem na pasta</span>
+      <h2>Seis arquivos para imprimir. Dois que saem com o seu nome.</h2>
+      <p class="lede">154 páginas, organizadas por quem recebe cada uma.</p>
+    </div>
+
+    <div class="itens">
+      <figure>
+        <img src="img/capa-1.jpg" alt="Capa do material Comece aqui" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Comece aqui</b><span>4 páginas &middot; os sete primeiros dias, para você</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/capa-2.jpg" alt="Capa do material Apostila da Aluna" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Apostila da Aluna</b><span>63 páginas &middot; para a aluna</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/capa-3.jpg" alt="Capa do material Guia da Instrutora" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Guia da Instrutora</b><span class="so">25 páginas &middot; só para você</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/capa-4.jpg" alt="Capa do material Caderno de Exercícios" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Caderno de Exercícios</b><span>40 páginas &middot; para a aluna</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/capa-5.jpg" alt="Capa do material Fichas do Atendimento" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Fichas do Atendimento</b><span>10 páginas &middot; para a cliente da aluna</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/capa-6.jpg" alt="Capa do material Modelos de Certificado" width="360" height="509" loading="lazy" decoding="async">
+        <figcaption><b>Modelos de Certificado</b><span>12 páginas &middot; para quem for aprovada</span></figcaption>
+      </figure>
+    </div>
+
+
+    <div class="anexo">
+      <span class="label">Também editáveis</span>
+      <ul>
+        <li><b>Capas e fichas</b> 17 páginas</li>
+        <li><b>Certificados</b> 11 páginas</li>
+      </ul>
+      <p>Você abre no Canva, troca o logotipo e o nome pelos seus, e imprime.</p>
+    </div>
+
+    <div class="fecho">
+      <p>O que está aí é o material. O que ele vira é uma turma com data, carga
+        horária e certificado no fim. <b>São 154 páginas em PDF: quem imprime é
+        você, e é por isso que cabe em R$47.</b></p>
+    </div>
+
+    <div class="saida">
+      <a class="btn" href="#oferta">Quero o Curso na Pasta &middot; R$47</a>
+    </div>
+  </div>
+</section>
+
+<section class="dentro" id="dentro">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">04 &nbsp;/&nbsp; Por dentro</span>
+      <h2>Cada página tem uma função na aula.</h2>
+      <p class="lede">Três exemplos, um de cada material, do jeito que saem da
+        impressora.</p>
+    </div>
+    <div class="folhas">
+      <figure>
+        <img src="img/dentro-1.jpg" alt="Página 12 da Apostila da Aluna" width="780" height="1103" loading="lazy" decoding="async">
+        <figcaption><b>Página 12 da Apostila da Aluna</b><span>O ciclo do pelo, com diagrama próprio, o que isso muda no atendimento e linhas em branco para ela anotar na aula.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/dentro-2.jpg" alt="Folha 3 do Caderno de Exercícios" width="780" height="1103" loading="lazy" decoding="async">
+        <figcaption><b>Folha 3 do Caderno de Exercícios</b><span>A aluna marca os quatro pontos e as duas linhas no rosto, liga em quatro traços e anota as medidas dos dois lados.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/dentro-3.jpg" alt="Página 3 das Fichas do Atendimento" width="780" height="1103" loading="lazy" decoding="async">
+        <figcaption><b>Página 3 das Fichas do Atendimento</b><span>Anamnese com procedimentos anteriores, avaliação da pele, teste de sensibilidade e declaração de uso de dados.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="saida">
+      <a class="btn" href="#oferta">Quero o Curso na Pasta &middot; R$47</a>
+    </div>
+  </div>
+</section>
+
+<section class="oferta" id="oferta">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">05 &nbsp;/&nbsp; A oferta</span>
+      <h2>Uma compra. Todas as suas turmas.</h2>
+      <p class="lede">Pagamento único, sem mensalidade e sem renovação.</p>
+    </div>
+
+    <ul class="inclui">
+      <li><span><b>Seis arquivos prontos para imprimir</b>, 154 páginas</span></li>
+      <li><span><b>Dois arquivos editáveis</b> no Canva, 28 páginas</span></li>
+      <li><span><b>Cinco cursos possíveis</b>, de 25 a 57 horas</span></li>
+      <li><span><b>Dez modelos de certificado</b>, com verso programático</span></li>
+      <li><span><b>Imprima quantas vezes quiser</b>, para quantas turmas quiser</span></li>
+      <li><span><b>Atualizações da edição</b> enviadas a quem já comprou</span></li>
+    </ul>
+
+    <p class="esforco">Escrever um plano de aula hora a hora para cinco cursos é
+      trabalho de semanas. <b>Ele já está escrito.</b></p>
+
+    <div class="cartao">
+      <svg class='sel' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 328"><path d="M 20 54 A 34 34 0 0 1 54 20 L 152 20 C 166 20 172 28 180 40 C 188 52 192 60 206 60 L 327 60 A 32 32 0 0 1 359 92 L 359 275 A 32 32 0 0 1 327 307 L 54 307 A 34 34 0 0 1 20 273 Z" fill="#F3ECE0"/><path d="M 52 112 C 57.3 112.3 70.7 111.8 84.0 114.0 C 97.3 116.2 118.7 121.0 132.0 125.0 C 145.3 129.0 153.3 133.0 164.0 138.0 C 174.7 143.0 185.3 148.5 196.0 155.0 C 206.7 161.5 217.3 167.8 228.0 177.0 C 238.7 186.2 249.3 197.0 260.0 210.0 C 270.7 223.0 282.7 240.0 292.0 255.0 C 301.3 270.0 312.0 292.5 316.0 300.0 L 320 307 C 315.3 302.0 302.0 288.3 292.0 277.0 C 282.0 265.7 270.7 250.0 260.0 239.0 C 249.3 228.0 238.7 219.5 228.0 211.0 C 217.3 202.5 206.7 194.5 196.0 188.0 C 185.3 181.5 174.7 176.7 164.0 172.0 C 153.3 167.3 145.3 163.5 132.0 160.0 C 118.7 156.5 97.3 152.8 84.0 151.0 C 70.7 149.2 57.3 149.3 52.0 149.0 C 40 149 30 140 30 130 C 30 119 40 112 52 112 Z" fill="#0B0A09"/><circle cx="20" cy="112" r="20" fill="#C9A06C"/></svg>
+      <p class="conv">Compare com o que você cobra por um atendimento.</p>
+      <div class="val">R$47</div>
+      <p class="cond">no Pix ou no cartão, em até 6x</p>
+      <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero o Curso na Pasta</a>
+      <p class="gar"><b>Sete dias de garantia.</b> Abra tudo, imprima uma folha e
+        decida. Se não for o que você esperava, peça o reembolso e recebe o valor
+        de volta.</p>
+      <p class="ace">Acesso imediato na área de membros.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quem" id="quem">
+  <div class="col">
+    <div class="foto">
+      <img src="img/fabrise.jpg" width="1080" height="1159"
+           loading="lazy" decoding="async"
+           alt="Fabrise Souza, especialista na técnica Shadow">
+    </div>
+    <div class="txt">
+      <span class="num label">06 &nbsp;/&nbsp; Quem assina</span>
+      <h2>Fabrise Souza</h2>
+      <p class="cargo">Especialista na técnica Shadow e em micropigmentação de lábios,
+        com estúdio em São Paulo.</p>
+      <div class="rule"></div>
+      <p class="t">Ela atende no estúdio dela e dá cursos presenciais. O Curso na
+        Pasta leva o nome dela e nasceu de uma pergunta prática: o que uma
+        profissional precisa ter em mãos para abrir a própria turma sem improvisar.</p>
+      <p class="t"><b>O conteúdo não foi escrito de memória.</b> Cada norma citada
+        no kit vem com artigo e data de conferência, as fontes estão listadas nas
+        duas últimas páginas do Guia da Instrutora, e onde as referências divergem
+        o material diz que divergem e adota a recomendação mais cautelosa.</p>
+      <p class="ig">@fabrise_pmu &nbsp;·&nbsp; São Paulo</p>
+    </div>
+  </div>
+</section>
+
+<section class="obj" id="objecoes">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">07 &nbsp;/&nbsp; Antes de decidir</span>
+      <h2>Três coisas que costumam travar.</h2>
+    </div>
+    <div class="trava">
+      <div>
+        <h3>&ldquo;Eu queria que tudo fosse editável.&rdquo;</h3>
+        <p>Dois arquivos levam a sua marca: as capas com as fichas, e os
+          certificados. São duas trocas, um logotipo e um nome. <b>Os outros seis
+          saem prontos de propósito.</b> O que está neles é conteúdo técnico com
+          fonte e data de conferência, e material em que tudo é editável é material
+          que você precisa revisar inteiro antes de entregar para a sua aluna.</p>
+      </div>
+      <div>
+        <h3>&ldquo;Nunca dei aula na vida.&rdquo;</h3>
+        <p>É exatamente para isso que existe o Guia da Instrutora. <b>Você não
+          precisa inventar a estrutura da aula:</b> ela está escrita hora a hora,
+          com o que dizer em cada bloco e como avaliar no fim. E a folha
+          &ldquo;Comece aqui&rdquo; diz o que fazer nos primeiros sete dias, na ordem.</p>
+      </div>
+      <div>
+        <h3>&ldquo;Não tem videoaula?&rdquo;</h3>
+        <p>Não tem, e é de propósito. <b>O que você recebe é o material que vai
+          para a mão da sua aluna.</b> Se a promessa fosse te ensinar a técnica,
+          seria vídeo. A promessa é outra: entregar o curso montado para você
+          ensinar o que já sabe fazer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">08 &nbsp;/&nbsp; Perguntas</span>
+      <h2>O que perguntam antes de comprar.</h2>
+    </div>
+    <div class="lista">
+        <details>
+          <summary>Preciso saber usar o Canva?</summary>
+          <p class="resp">Só para dois arquivos, e só se você quiser a sua marca neles. Os outros seis você baixa e manda para a impressora. O passo a passo de como abrir no Canva vem na primeira página de cada arquivo editável.</p>
+        </details>
+        <details>
+          <summary>Posso usar com mais de uma turma?</summary>
+          <p class="resp">Pode imprimir quantas vezes quiser, para quantas turmas quiser, sem pagar de novo. O que não pode é revender os arquivos ou repassá-los a outra profissional.</p>
+        </details>
+        <details>
+          <summary>Preciso imprimir as 154 páginas?</summary>
+          <p class="resp">Não. Você imprime a trilha que vai dar. A folha &ldquo;Comece aqui&rdquo; traz o intervalo de páginas de cada módulo e a lista do que imprimir por aluna.</p>
+        </details>
+        <details>
+          <summary>Serve se eu só faço design e henna?</summary>
+          <p class="resp">Serve. São cinco cursos possíveis, e o mais curto usa só os módulos 1 e 2, com 25 horas. Os módulos de brow lamination e micropigmentação ficam ali para quando você quiser abrir uma turma nova.</p>
+        </details>
+        <details>
+          <summary>Como eu recebo o material?</summary>
+          <p class="resp">No momento em que o pagamento é aprovado você recebe acesso à área de membros, com os seis PDFs e os dois arquivos editáveis para baixar.</p>
+        </details>
+        <details>
+          <summary>Posso cobrar quanto eu quiser pelo meu curso?</summary>
+          <p class="resp">Pode. O preço da sua turma é decisão sua, e o material não impõe nenhuma regra sobre isso.</p>
+        </details>
+        <details>
+          <summary>O certificado tem validade?</summary>
+          <p class="resp">Ele declara a carga horária e o conteúdo do curso que você deu, com o seu nome e a sua marca. É certificado de curso livre: não é diploma técnico e não substitui formação regulamentada.</p>
+        </details>
+        <details>
+          <summary>E se não for o que eu esperava?</summary>
+          <p class="resp">Você tem sete dias para abrir tudo e decidir. Se não servir, peça o reembolso e recebe o valor de volta.</p>
+        </details>
+    </div>
+  </div>
+</section>
+
+<section class="fim" id="fim">
+  <div class="col">
+    <h2>O curso está pronto. Falta a data.</h2>
+    <div class="rule"></div>
+    <p class="t">Você já sabe fazer. O que faltava era o material: a apostila da
+      aluna, o plano de aula hora a hora, as folhas de treino, as fichas e o
+      certificado. <b>São 154 páginas e dois arquivos para pôr a sua marca, por
+      R$47, uma vez.</b></p>
+    <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero o Curso na Pasta &middot; R$47</a>
+    <div class="trust">
+      <span><i></i>Acesso imediato</span>
+      <span><i></i>7 dias de garantia</span>
+    </div>
+    <p class="ps"><b>P.S.</b> Esta é a primeira edição do kit. Quem compra agora
+      recebe as atualizações do material sem pagar de novo. E se não for o que
+      você esperava, são sete dias para pedir o reembolso pela própria Kiwify.</p>
+  </div>
+</section>
+
+<footer class="rodape">
+  <div class="col">
+    <svg class='mk' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 328"><path d="M 20 54 A 34 34 0 0 1 54 20 L 152 20 C 166 20 172 28 180 40 C 188 52 192 60 206 60 L 327 60 A 32 32 0 0 1 359 92 L 359 275 A 32 32 0 0 1 327 307 L 54 307 A 34 34 0 0 1 20 273 Z" fill="#F3ECE0"/><path d="M 52 112 C 57.3 112.3 70.7 111.8 84.0 114.0 C 97.3 116.2 118.7 121.0 132.0 125.0 C 145.3 129.0 153.3 133.0 164.0 138.0 C 174.7 143.0 185.3 148.5 196.0 155.0 C 206.7 161.5 217.3 167.8 228.0 177.0 C 238.7 186.2 249.3 197.0 260.0 210.0 C 270.7 223.0 282.7 240.0 292.0 255.0 C 301.3 270.0 312.0 292.5 316.0 300.0 L 320 307 C 315.3 302.0 302.0 288.3 292.0 277.0 C 282.0 265.7 270.7 250.0 260.0 239.0 C 249.3 228.0 238.7 219.5 228.0 211.0 C 217.3 202.5 206.7 194.5 196.0 188.0 C 185.3 181.5 174.7 176.7 164.0 172.0 C 153.3 167.3 145.3 163.5 132.0 160.0 C 118.7 156.5 97.3 152.8 84.0 151.0 C 70.7 149.2 57.3 149.3 52.0 149.0 C 40 149 30 140 30 130 C 30 119 40 112 52 112 Z" fill="#0B0A09"/><circle cx="20" cy="112" r="20" fill="#C9A06C"/></svg>
+    <p class="nome">Curso na <em>Pasta</em></p>
+    <p>Fabrise Academy &nbsp;·&nbsp; São Paulo &nbsp;·&nbsp; @fabrise_pmu</p>
+    <p class="legal">Certificado de curso livre não é diploma técnico e não
+      substitui formação regulamentada. O material tem finalidade educativa e não
+      substitui avaliação médica, orientação jurídica nem as exigências da
+      vigilância sanitária do seu município.</p>
+    <p class="legal">Pagamento processado pela Kiwify. &nbsp;·&nbsp; Edição 2026.</p>
+  </div>
+</footer>
+<a class="zap" href="https://wa.me/5511973302764?text=Ol%C3%A1%21%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Curso%20na%20Pasta." target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/></svg></a>

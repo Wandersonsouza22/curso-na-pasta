@@ -1,0 +1,5 @@
+build/node_modules
+build/*.png
+*.pyc
+__pycache__/
+src/page.html
