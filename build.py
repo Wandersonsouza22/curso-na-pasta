@@ -16,7 +16,7 @@ import re
 
 # ---------------------------------------------------------------- endereço
 # Sem barra no fim. É o único lugar com o endereço escrito à mão.
-BASE = "https://souintencao.com.br/cursonapasta"
+BASE = "https://curso.souintencao.com.br"
 
 TITULO = "Curso na Pasta · dê o seu curso de sobrancelhas"
 DESC = ("154 páginas prontas para imprimir e dar o seu próprio curso de "

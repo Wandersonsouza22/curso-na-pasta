@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://souintencao.com.br/cursonapasta/sitemap.xml
+Sitemap: https://curso.souintencao.com.br/sitemap.xml
