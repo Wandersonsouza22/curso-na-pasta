@@ -100,6 +100,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 .rule{width:56px;height:2px;background:var(--gold);margin:var(--s4) auto var(--s3)}
 .sub{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);margin:0}
 .sub b{color:var(--ink);font-weight:600}
+.sub+.sub{margin-top:var(--s3)}
 .cta{display:flex;flex-direction:column;align-items:center;gap:var(--s3)}
 .cta .btn{width:100%}
 @media(min-width:560px){.cta .btn{width:auto;padding-inline:var(--s6)}}
@@ -280,10 +281,22 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
  /* Um objeto, um bloco: a capa carrega embaixo o próprio nome, as páginas e
    para quem vai. Antes a lista vinha em tabela separada e repetia os seis
    títulos que já estavam impressos nas capas. */
-.itens{display:grid;grid-template-columns:repeat(2,1fr);
-  gap:clamp(24px,4vw,var(--s5)) var(--s3);margin-top:clamp(32px,5vw,var(--s6))}
-@media(min-width:560px){.itens{grid-template-columns:repeat(3,1fr);
-  column-gap:var(--s4);max-width:920px;margin-inline:auto}}
+/* Seis nomes parecidos é o que faz a leitora se perder. Agrupar por quem
+   recebe cada arquivo troca a memorização de nomes por um modelo de três
+   mãos: a sua, a da aluna e a da cliente dela. As somas fecham 154. */
+.grupos{max-width:920px;margin:clamp(32px,5vw,var(--s6)) auto 0}
+.grupo+.grupo{margin-top:clamp(32px,5vw,var(--s5))}
+.cabg{display:flex;align-items:baseline;justify-content:center;
+  gap:var(--s2);padding-bottom:var(--s2);
+  border-bottom:1px solid rgba(27,27,27,.16)}
+.cabg .dest{font-family:var(--display);font-weight:400;
+  font-size:clamp(18px,2.4vw,22px);line-height:1.2;color:var(--ink)}
+.cabg .qtd{font-size:var(--t-micro);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-ink);font-weight:600;white-space:nowrap}
+.itens{display:flex;flex-wrap:wrap;justify-content:center;
+  gap:clamp(24px,4vw,var(--s4)) var(--s3);margin-top:var(--s4)}
+.itens figure{flex:0 1 clamp(130px,42%,240px)}
+@media(min-width:560px){.itens figure{flex:0 1 240px}}
 .itens figure{margin:0}
 .itens img{display:block;width:100%;height:auto;
   box-shadow:0 12px 28px -18px rgba(27,27,27,.55)}
@@ -292,9 +305,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
   font-size:clamp(17px,2.1vw,20px);line-height:1.15;color:var(--ink)}
 .itens span{display:block;margin-top:5px;font-size:var(--t-micro);
   color:var(--ink-3);line-height:1.35}
-/* o Guia é o único item que não vai para a aluna: a assimetria é o argumento,
-   então ela recebe cor em vez de ficar igual às outras cinco */
-.itens span.so{color:var(--gold-ink);font-weight:600}
+
 
 
  /* Os dois editáveis não são capa de imprimir: entram como anexo, com
@@ -346,6 +357,68 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 /* esta é a última prova antes da oferta: quem se convence aqui precisa de
    saída sem ter de rolar a seção inteira seguinte */
 .dentro .saida{display:flex;justify-content:center;
+  margin-top:clamp(32px,5vw,var(--s6))}
+
+/* ------------------------------------------------- 04 os cinco cursos
+   A seção 03 mostra os seis arquivos por fora. Esta mostra a apostila por
+   dentro e, sobretudo, responde à pergunta que o número "5 módulos" deixa
+   em aberto: cinco módulos viram quais cursos, de quantas horas. A tabela
+   é a do Guia da Instrutora, copiada sem arredondar. A tira de páginas
+   rola na horizontal e não usa script: o encaixe é do próprio navegador e
+   a página continua sem um byte de JavaScript. */
+.modulos{background:var(--paper);padding:clamp(56px,9vw,104px) 0;
+  scroll-margin-top:76px}
+.modulos .col{max-width:1060px;margin:0 auto;padding:0 var(--s3)}
+.modulos .cab{max-width:34rem;margin:0 auto;text-align:center}
+.modulos .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.modulos h2{font-family:var(--display);font-weight:400;margin:0;
+  font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
+@media(min-width:920px){.modulos h2{text-wrap:balance}}
+.modulos .lede{font-size:var(--t-body);line-height:1.6;color:var(--ink-2);
+  margin:var(--s4) 0 0}
+
+.trilhas{list-style:none;margin:clamp(32px,5vw,var(--s6)) auto 0;padding:0;
+  max-width:38rem;border-top:1px solid rgba(27,27,27,.14)}
+.trilhas li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s2);
+  padding:var(--s3) 0;border-bottom:1px solid rgba(27,27,27,.14)}
+.trilhas .cur{flex:1 1 11rem;font-weight:600;color:var(--ink);
+  font-size:var(--t-body);line-height:1.4}
+.trilhas .mod{flex:0 1 auto;font-size:14px;color:var(--ink-3);line-height:1.4}
+.trilhas .hr{flex:0 0 auto;margin-left:auto;font-size:14px;font-weight:600;
+  color:var(--gold-ink);white-space:nowrap}
+/* No celular a linha não cabe em uma só: o nome do curso fica sozinho e a
+   combinação com a carga horária desce para a segunda linha, alinhada à
+   esquerda, em vez de a carga horária cair solta na direita. */
+@media(max-width:559px){
+  .trilhas li{gap:var(--s1) var(--s2)}
+  .trilhas .cur{flex:1 1 100%}
+  .trilhas .hr{margin-left:0}
+  .trilhas .hr::before{content:"\00b7";margin-right:.5em;color:var(--ink-3);
+    font-weight:400}
+}
+.trilhas .base{border-bottom-width:2px;border-bottom-color:rgba(27,27,27,.3)}
+.trilhas .base .cur{font-family:var(--display);font-weight:400;
+  font-size:calc(var(--t-body) * 1.15)}
+.trilhas li:not(.base) .cur::before{content:"+";margin-right:.45em;
+  color:var(--gold-ink);font-weight:600}
+.modulos .nota{max-width:38rem;margin:var(--s4) auto 0;text-align:center;
+  font-size:14px;line-height:1.6;color:var(--ink-3)}
+
+.tira{display:flex;gap:var(--s3);margin-top:clamp(32px,5vw,var(--s6));
+  padding:0 var(--s3) var(--s3);overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.tira figure{flex:0 0 min(74vw,300px);margin:0;scroll-snap-align:center}
+@media(min-width:760px){.tira figure{flex:0 0 300px}
+  .tira{scroll-snap-type:x proximity}}
+.tira img{display:block;width:100%;height:auto;background:#fff;
+  box-shadow:0 18px 40px -26px rgba(0,0,0,.55)}
+.tira figcaption{margin-top:var(--s3)}
+.tira b{display:block;font-size:var(--t-label);font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);
+  line-height:1.4}
+.tira span{display:block;margin-top:var(--s2);font-size:14px;line-height:1.6;
+  color:var(--ink-2)}
+.modulos .saida{display:flex;justify-content:center;
   margin-top:clamp(32px,5vw,var(--s6))}
 
 /* ------------------------------------------------------------- 05 a oferta
@@ -512,7 +585,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
   <div class="nome"><svg class="mk" viewBox="0 0 360 328" aria-hidden="true"><path d="M 20 54 A 34 34 0 0 1 54 20 L 152 20 C 166 20 172 28 180 40 C 188 52 192 60 206 60 L 327 60 A 32 32 0 0 1 359 92 L 359 275 A 32 32 0 0 1 327 307 L 54 307 A 34 34 0 0 1 20 273 Z" fill="#F3ECE0"/><path d="M 52 112 C 57.3 112.3 70.7 111.8 84.0 114.0 C 97.3 116.2 118.7 121.0 132.0 125.0 C 145.3 129.0 153.3 133.0 164.0 138.0 C 174.7 143.0 185.3 148.5 196.0 155.0 C 206.7 161.5 217.3 167.8 228.0 177.0 C 238.7 186.2 249.3 197.0 260.0 210.0 C 270.7 223.0 282.7 240.0 292.0 255.0 C 301.3 270.0 312.0 292.5 316.0 300.0 L 320 307 C 315.3 302.0 302.0 288.3 292.0 277.0 C 282.0 265.7 270.7 250.0 260.0 239.0 C 249.3 228.0 238.7 219.5 228.0 211.0 C 217.3 202.5 206.7 194.5 196.0 188.0 C 185.3 181.5 174.7 176.7 164.0 172.0 C 153.3 167.3 145.3 163.5 132.0 160.0 C 118.7 156.5 97.3 152.8 84.0 151.0 C 70.7 149.2 57.3 149.3 52.0 149.0 C 40 149 30 140 30 130 C 30 119 40 112 52 112 Z" fill="#0B0A09"/><circle cx="20" cy="112" r="20" fill="#C9A06C"/></svg><span>Curso na <em>Pasta</em></span></div>
   <div class="dir">
     <div class="preco">R$47</div>
-    <a class="btn" href="#preco"><span class="longo">Quero dar o meu curso</span><span class="curto">Quero a pasta</span></a>
+    <a class="btn" href="#preco"><span class="longo">Quero dar o meu curso</span><span class="curto">Quero dar aula</span></a>
   </div>
 </header>
 
@@ -523,8 +596,11 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
       <h1>Dê o seu próprio curso de sobrancelhas.
         <span class="it">Falta só o seu nome nele.</span></h1>
       <div class="rule"></div>
-      <p class="sub"><b>154 páginas prontas para imprimir, encadernar e levar para a sala.</b>
-        As capas, as fichas e os certificados você personaliza no Canva com a sua marca.</p>
+      <p class="sub"><b>Seis arquivos em PDF, 154 páginas prontas para imprimir, encadernar e
+        levar para a sala.</b> As capas, as fichas e os certificados você personaliza no Canva
+        com a sua marca.</p>
+      <p class="sub">Atendendo, você é paga por uma cliente de cada vez. Numa turma, as mesmas
+        horas são pagas por cada aluna, <b>no preço que você decidir.</b></p>
     </div>
 
     <div class="mock">
@@ -550,10 +626,10 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 
     <div class="acao">
       <div class="cta">
-        <a class="btn" href="#oferta">Quero o Curso na Pasta &middot; R$47</a>
-        <a class="ver" href="#conteudo">Ver tudo o que vem na pasta <span>&rsaquo;</span></a>
+        <a class="btn" href="#oferta">Quero dar o meu curso &middot; R$47</a>
+        <a class="ver" href="#conteudo">Ver os seis arquivos em PDF <span>&rsaquo;</span></a>
         <div class="trust">
-          <span><i></i>Acesso imediato</span>
+          <span><i></i>Download imediato</span>
           <span><i></i>7 dias de garantia</span>
         </div>
       </div>
@@ -566,7 +642,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     <li><b>154</b> páginas</li>
     <li><b>6</b> arquivos para imprimir</li>
     <li><b>2</b> editáveis no Canva</li>
-    <li><b>5</b> módulos</li>
+    <li><b>5</b> cursos possíveis</li>
     <li><b>16</b> folhas de treino</li>
     <li><b>10</b> modelos de certificado</li>
   </ul>
@@ -577,8 +653,9 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     <div class="cab">
       <span class="num label">01 &nbsp;/&nbsp; O que trava</span>
       <h2>Você sabe fazer. Dar aula é outra história.</h2>
-      <p class="lede">Quase toda profissional de sobrancelhas já pensou em abrir
-        uma turma. O que trava raramente é a técnica.</p>
+      <p class="lede">Dar aula é o caminho mais direto para faturar sem colocar mais horas na
+        cadeira. Quase toda profissional de sobrancelhas já pensou nisso, e o que
+        trava raramente é a técnica.</p>
     </div>
 
     <div class="cards">
@@ -606,7 +683,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     <div class="cab">
       <span class="num label">02 &nbsp;/&nbsp; O que resolve</span>
       <h2>Você não monta o curso. Escolhe qual vai dar.</h2>
-      <p class="lede">Os cinco módulos se combinam em cinco cursos prontos, de 25 a 57
+      <p class="lede">Os cinco módulos se combinam em cinco cursos, de 25 a 57
         horas. O plano de cada aula já está escrito, hora a hora.</p>
     </div>
 
@@ -653,35 +730,51 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
   <div class="col">
     <div class="cab">
       <span class="num label">03 &nbsp;/&nbsp; O que vem na pasta</span>
-      <h2>Seis arquivos para imprimir. Dois que saem com o seu nome.</h2>
-      <p class="lede">154 páginas, organizadas por quem recebe cada uma.</p>
+      <h2>Seis arquivos, três destinos.</h2>
+      <p class="lede">O que fica na sua mão, o que vai para a mão da aluna e o que a
+        cliente dela assina. As 154 páginas se dividem assim.</p>
     </div>
 
-    <div class="itens">
-      <figure>
-        <img src="img/capa-1.jpg" alt="Capa do material Comece aqui" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Comece aqui</b><span>4 páginas &middot; os sete primeiros dias, para você</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/capa-2.jpg" alt="Capa do material Apostila da Aluna" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Apostila da Aluna</b><span>63 páginas &middot; para a aluna</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/capa-3.jpg" alt="Capa do material Guia da Instrutora" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Guia da Instrutora</b><span class="so">25 páginas &middot; só para você</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/capa-4.jpg" alt="Capa do material Caderno de Exercícios" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Caderno de Exercícios</b><span>40 páginas &middot; para a aluna</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/capa-5.jpg" alt="Capa do material Fichas do Atendimento" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Fichas do Atendimento</b><span>10 páginas &middot; para a cliente da aluna</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/capa-6.jpg" alt="Capa do material Modelos de Certificado" width="360" height="509" loading="lazy" decoding="async">
-        <figcaption><b>Modelos de Certificado</b><span>12 páginas &middot; para quem for aprovada</span></figcaption>
-      </figure>
+    <div class="grupos">
+      <div class="grupo">
+        <div class="cabg"><span class="dest">Fica com você</span><span class="qtd">29 páginas</span></div>
+      <div class="itens">
+        <figure>
+          <img src="img/capa-1.jpg" alt="Capa do material Comece aqui" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Comece aqui</b><span>4 páginas &middot; os sete primeiros dias, na ordem</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/capa-3.jpg" alt="Capa do material Guia da Instrutora" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Guia da Instrutora</b><span>25 páginas &middot; o plano de cada aula, hora a hora</span></figcaption>
+        </figure>
+      </div>
+      </div>
+      <div class="grupo">
+        <div class="cabg"><span class="dest">Vai para a sua aluna</span><span class="qtd">115 páginas</span></div>
+      <div class="itens">
+        <figure>
+          <img src="img/capa-2.jpg" alt="Capa do material Apostila da Aluna" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Apostila da Aluna</b><span>63 páginas &middot; os cinco módulos, para ela estudar</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/capa-4.jpg" alt="Capa do material Caderno de Exercícios" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Caderno de Exercícios</b><span>40 páginas &middot; as 16 folhas de treino</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/capa-6.jpg" alt="Capa do material Modelos de Certificado" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Modelos de Certificado</b><span>12 páginas &middot; no fim, para quem for aprovada</span></figcaption>
+        </figure>
+      </div>
+      </div>
+      <div class="grupo">
+        <div class="cabg"><span class="dest">Vai para a cliente dela</span><span class="qtd">10 páginas</span></div>
+      <div class="itens">
+        <figure>
+          <img src="img/capa-5.jpg" alt="Capa do material Fichas do Atendimento" width="360" height="509" loading="lazy" decoding="async">
+          <figcaption><b>Fichas do Atendimento</b><span>10 páginas &middot; anamnese, termo, ficha técnica e pós</span></figcaption>
+        </figure>
+      </div>
+      </div>
     </div>
 
 
@@ -701,7 +794,63 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     </div>
 
     <div class="saida">
-      <a class="btn" href="#preco">Quero o Curso na Pasta &middot; R$47</a>
+      <a class="btn" href="#preco">Quero dar o meu curso &middot; R$47</a>
+    </div>
+  </div>
+</section>
+
+<section class="modulos" id="modulos">
+  <div class="col">
+    <div class="cab">
+      <span class="num label">04 &nbsp;/&nbsp; Os cinco cursos</span>
+      <h2>Cinco cursos possíveis. Cada um com a aula já escrita.</h2>
+      <p class="lede">Toda turma começa igual, com fundamentos e design. O que muda
+        é a técnica que você escolhe ensinar depois, e cada escolha já tem o plano de
+        aula hora a hora no Guia da Instrutora.</p>
+    </div>
+
+    <ul class="trilhas">
+      <li class="base"><span class="cur">Fundamentos e design</span><span class="mod">a base de toda turma</span><span class="hr">25 horas</span></li>
+      <li><span class="cur">mais henna</span><span class="mod">curso de design com henna</span><span class="hr">32 horas</span></li>
+      <li><span class="cur">mais brow lamination</span><span class="mod">curso de brow lamination</span><span class="hr">32 horas</span></li>
+      <li><span class="cur">mais micropigmentação Shadow</span><span class="mod">curso de micropigmentação</span><span class="hr">43 horas</span></li>
+      <li><span class="cur">as três juntas</span><span class="mod">curso de sobrancelha completa</span><span class="hr">57 horas</span></li>
+    </ul>
+
+    <p class="nota">O nome do curso e a carga horária que você imprime no certificado
+      saem daí. As três técnicas vêm nos mesmos seis arquivos, pelo mesmo R$47: brow
+      lamination e micropigmentação têm módulo na apostila e plano de aula próprio,
+      como a henna.</p>
+
+    <div class="tira">
+      <figure>
+        <img src="img/mod-capa.jpg" alt="Capa da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Capa &middot; Apostila da Aluna</b><span>As 63 páginas que vão para a mão dela, com a sua marca na capa.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/mod-1.jpg" alt="Abertura do módulo 1 da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Módulo 01 &middot; Fundamentos</b><span>18 páginas. O que vale para todas as técnicas: pele, pelo, segurança, quem pode e quem não pode, e o desenho certo para cada rosto.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/mod-2.jpg" alt="Abertura do módulo 2 da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Módulo 02 &middot; Design de sobrancelhas</b><span>8 páginas. A técnica que todas as outras pressupõem: o desenho sai do papel e cada pelo removido é uma decisão.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/mod-3.jpg" alt="Abertura do módulo 3 da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Módulo 03 &middot; Design com henna</b><span>9 páginas. Colore os fios e a pele entre eles, sem agulha e sem química dentro do fio.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/mod-4.jpg" alt="Abertura do módulo 4 da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Módulo 04 &middot; Brow lamination</b><span>9 páginas. A única técnica do kit que não toca a pele: ela trabalha dentro do fio.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/mod-5.jpg" alt="Abertura do módulo 5 da Apostila da Aluna" width="820" height="1160" loading="lazy" decoding="async">
+        <figcaption><b>Módulo 05 &middot; Micropigmentação Shadow</b><span>15 páginas. A única que atravessa a pele. O pigmento fica por um ano ou mais e cicatriza à vista da cliente.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="saida">
+      <a class="btn" href="#preco">Quero dar o meu curso &middot; R$47</a>
     </div>
   </div>
 </section>
@@ -709,15 +858,15 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="dentro" id="dentro">
   <div class="col">
     <div class="cab">
-      <span class="num label">04 &nbsp;/&nbsp; Por dentro</span>
+      <span class="num label">05 &nbsp;/&nbsp; Por dentro</span>
       <h2>Cada página tem uma função na aula.</h2>
-      <p class="lede">Três exemplos, um de cada material, do jeito que saem da
-        impressora.</p>
+      <p class="lede">Uma página de cada mão: a sua, a da aluna e a da cliente dela,
+        do jeito que saem da impressora.</p>
     </div>
     <div class="folhas">
       <figure>
-        <img src="img/dentro-1.jpg" alt="Página 12 da Apostila da Aluna" width="780" height="1103" loading="lazy" decoding="async">
-        <figcaption><b>Página 12 da Apostila da Aluna</b><span>O ciclo do pelo, com diagrama próprio, o que isso muda no atendimento e linhas em branco para ela anotar na aula.</span></figcaption>
+        <img src="img/dentro-0.jpg" alt="Página 7 do Guia da Instrutora" width="780" height="1103" loading="lazy" decoding="async">
+        <figcaption><b>Página 7 do Guia da Instrutora</b><span>Os critérios para aprovar a aluna na prática, com caixa de OK e de refazer, e as respostas dos casos do caderno.</span></figcaption>
       </figure>
       <figure>
         <img src="img/dentro-2.jpg" alt="Folha 3 do Caderno de Exercícios" width="780" height="1103" loading="lazy" decoding="async">
@@ -730,7 +879,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     </div>
 
     <div class="saida">
-      <a class="btn" href="#preco">Quero o Curso na Pasta &middot; R$47</a>
+      <a class="btn" href="#preco">Quero dar o meu curso &middot; R$47</a>
     </div>
   </div>
 </section>
@@ -738,13 +887,13 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="oferta" id="oferta">
   <div class="col">
     <div class="cab">
-      <span class="num label">05 &nbsp;/&nbsp; A oferta</span>
+      <span class="num label">06 &nbsp;/&nbsp; A oferta</span>
       <h2>Uma compra. Todas as suas turmas.</h2>
       <p class="lede">Pagamento único, sem mensalidade e sem renovação.</p>
     </div>
 
     <ul class="inclui">
-      <li><span><b>Seis arquivos prontos para imprimir</b>, 154 páginas</span></li>
+      <li><span><b>Seis PDFs prontos para imprimir</b>, 154 páginas</span></li>
       <li><span><b>Dois arquivos editáveis</b> no Canva, 28 páginas</span></li>
       <li><span><b>Cinco cursos possíveis</b>, de 25 a 57 horas</span></li>
       <li><span><b>Dez modelos de certificado</b>, com verso programático</span></li>
@@ -760,11 +909,11 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
       <p class="conv">Compare com o que você cobra por um atendimento.</p>
       <div class="val">R$47</div>
       <p class="cond">no Pix ou no cartão, em até 6x</p>
-      <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero o Curso na Pasta</a>
+      <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero dar o meu curso &middot; R$47</a>
       <p class="gar"><b>Sete dias de garantia.</b> Abra tudo, imprima uma folha e
         decida. Se não for o que você esperava, peça o reembolso e recebe o valor
         de volta.</p>
-      <p class="ace">Acesso imediato na área de membros.</p>
+      <p class="ace">Download imediato na área de membros. São arquivos digitais em PDF: nada é enviado pelo correio.</p>
     </div>
   </div>
 </section>
@@ -777,7 +926,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
            alt="Fabrise Souza, especialista na técnica Shadow">
     </div>
     <div class="txt">
-      <span class="num label">06 &nbsp;/&nbsp; Quem assina</span>
+      <span class="num label">07 &nbsp;/&nbsp; Quem assina</span>
       <h2>Fabrise Souza</h2>
       <p class="cargo">Especialista na técnica Shadow e em micropigmentação de lábios,
         com estúdio em São Paulo.</p>
@@ -797,7 +946,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="obj" id="objecoes">
   <div class="col">
     <div class="cab">
-      <span class="num label">07 &nbsp;/&nbsp; Antes de decidir</span>
+      <span class="num label">08 &nbsp;/&nbsp; Antes de decidir</span>
       <h2>Três coisas que costumam travar.</h2>
     </div>
     <div class="trava">
@@ -830,7 +979,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="faq" id="faq">
   <div class="col">
     <div class="cab">
-      <span class="num label">08 &nbsp;/&nbsp; Perguntas</span>
+      <span class="num label">09 &nbsp;/&nbsp; Perguntas</span>
       <h2>O que perguntam antes de comprar.</h2>
     </div>
     <div class="lista">
@@ -848,7 +997,11 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
         </details>
         <details>
           <summary>Serve se eu só faço design e henna?</summary>
-          <p class="resp">Serve. São cinco cursos possíveis, e o mais curto usa só os módulos 1 e 2, com 25 horas. Os módulos de brow lamination e micropigmentação ficam ali para quando você quiser abrir uma turma nova.</p>
+          <p class="resp">Serve. O curso mais curto é fundamentos e design, com 25 horas, e com henna vai para 32. Brow lamination e micropigmentação ficam ali para o dia em que você quiser abrir uma turma nova, sem comprar nada de novo.</p>
+        </details>
+        <details>
+          <summary>Em quanto tempo eu consigo dar a primeira turma?</summary>
+          <p class="resp">A folha &ldquo;Comece aqui&rdquo; organiza isso em sete dias, na ordem, com o tempo de cada passo: ler o Guia da Instrutora no dia 1, cerca de uma hora, escolher a trilha e a data em quinze minutos, pôr a sua marca nos dois arquivos editáveis no dia 2, cerca de quarenta minutos, e imprimir no dia 3. Você não precisa ler as 154 páginas antes de dar aula.</p>
         </details>
         <details>
           <summary>Como eu recebo o material?</summary>
@@ -878,9 +1031,9 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
       aluna, o plano de aula hora a hora, as folhas de treino, as fichas e o
       certificado. <b>São 154 páginas e dois arquivos para pôr a sua marca, por
       R$47, uma vez.</b></p>
-    <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero o Curso na Pasta &middot; R$47</a>
+    <a class="btn" href="https://pay.kiwify.com.br/7HPiCO2">Quero dar o meu curso &middot; R$47</a>
     <div class="trust">
-      <span><i></i>Acesso imediato</span>
+      <span><i></i>Download imediato</span>
       <span><i></i>7 dias de garantia</span>
     </div>
     <p class="ps"><b>P.S.</b> Esta é a primeira edição do kit. Quem compra agora
