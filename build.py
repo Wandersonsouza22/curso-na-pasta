@@ -26,6 +26,12 @@ OG_ALT = ("Curso na Pasta: capas do Guia da Instrutora, da Apostila da Aluna "
           "e dos Modelos de Certificado")
 CHECKOUT = "https://pay.kiwify.com.br/7HPiCO2"
 
+# Pixel da Meta do Curso na Pasta, no portfólio BM01, onde o domínio está
+# verificado. O ID é público: ele aparece no código-fonte de qualquer página
+# que o use. A compra NÃO é medida aqui: ela acontece na Kiwify e sai de lá.
+PIXEL = "1760430108515112"
+PRECO = "47.00"
+
 FONTES = [
     ("Cormorant Garamond", "cormorant-400.woff2", 400, "normal"),
     ("Cormorant Garamond", "cormorant-400i.woff2", 400, "italic"),
@@ -88,6 +94,52 @@ def main():
  }}
 }}"""
 
+    # O pixel é a única coisa de terceiro que a página carrega. Fica no fim do
+    # head para não atrasar o primeiro texto, e o fbevents.js é assíncrono.
+    pixel = f"""<script>
+!function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)}};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','{PIXEL}');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id={PIXEL}&amp;ev=PageView&amp;noscript=1"></noscript>"""
+
+    # Duas tarefas, uma passada só pelos botões de compra:
+    #
+    # 1. Repassar os parâmetros do anúncio (utm_*, fbclid) para o checkout. Sem
+    #    isso a venda chega na Kiwify sem origem e não dá para saber qual
+    #    criativo pagou. Só acrescenta o que o link ainda não tem.
+    # 2. Disparar InitiateCheckout no clique. É o evento mais perto da compra
+    #    que esta página consegue ver: o que acontece depois é na Kiwify.
+    rastreio = f"""<script>
+(function(){{
+  var ALVO='pay.kiwify.com.br';
+  function links(){{return document.querySelectorAll('a[href*="'+ALVO+'"]')}}
+  function repassa(){{
+    if(location.search.length<2)return;
+    var vindos=new URLSearchParams(location.search);
+    links().forEach(function(a){{
+      var u;try{{u=new URL(a.href)}}catch(e){{return}}
+      vindos.forEach(function(v,k){{if(!u.searchParams.has(k))u.searchParams.set(k,v)}});
+      a.href=u.toString();
+    }});
+  }}
+  document.addEventListener('click',function(e){{
+    var el=e.target;
+    if(el&&el.nodeType!==1)el=el.parentElement;
+    if(!el||!el.closest||!el.closest('a[href*="'+ALVO+'"]'))return;
+    if(window.fbq)fbq('track','InitiateCheckout',
+      {{value:{PRECO},currency:'BRL',content_name:'Curso na Pasta'}});
+  }},true);
+  if(document.readyState==='loading')
+    document.addEventListener('DOMContentLoaded',repassa);
+  else repassa();
+}})();
+</script>"""
+
     cabeca = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -129,11 +181,12 @@ def main():
 
 <style>{faces}</style>
 <script type="application/ld+json">{jsonld}</script>
+{pixel}
 </head>
 <body>
 """
 
-    saida = cabeca + corpo.rstrip() + "\n</body>\n</html>\n"
+    saida = cabeca + corpo.rstrip() + "\n" + rastreio + "\n</body>\n</html>\n"
 
     # Travas: nada de travessão no texto visível e nenhuma imagem embutida.
     visivel = re.sub(r"<(style|script)\b.*?</\1>", " ", saida, flags=re.S | re.I)
