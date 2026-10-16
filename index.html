@@ -233,7 +233,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    sem nomear o obstáculo; esta seção completa a frase que a leitora já está
    pensando, e nomeia logística, não incompetência. */
 .dor{background:var(--dark);color:var(--cream);
-  padding:clamp(56px,9vw,104px) var(--s3);
+  padding:clamp(80px,12vw,120px) var(--s3);
   /* a barra é sticky: sem esta folga o salto por âncora esconde a etiqueta
      da seção atrás dela */
   scroll-margin-top:76px}
@@ -279,7 +279,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    quente. A prova não é um mockup genérico, é uma página real do Guia: o
    título promete que o curso já está planejado e a imagem é o planejamento.
    Fundo papel, para alternar com o preto da seção anterior. */
-.res{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
+.res{background:var(--paper);padding:clamp(80px,12vw,120px) var(--s3);
   scroll-margin-top:76px}
 .res .col{max-width:1060px;margin:0 auto}
 .res .cab{max-width:34rem;margin:0 auto;text-align:center}
@@ -332,7 +332,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    professora à cliente da aluna. As seis capas são as capas reais dos
    arquivos, não mockup. Fundo areia, para alternar com o papel da seção
    anterior. */
-.pasta{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+.pasta{background:var(--sand);padding:clamp(80px,12vw,120px) var(--s3);
   scroll-margin-top:76px}
 .pasta .col{max-width:1060px;margin:0 auto}
 .pasta .cab{max-width:34rem;margin:0 auto;text-align:center}
@@ -397,7 +397,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    material, e cada legenda nomeia o que aquela página prova. Fundo preto:
    papel claro sobre preto é como se apresenta documento. */
 .dentro{background:var(--dark);color:var(--cream);
-  padding:clamp(56px,9vw,104px) var(--s3);scroll-margin-top:76px}
+  padding:clamp(80px,12vw,120px) var(--s3);scroll-margin-top:76px}
 .dentro .col{max-width:1060px;margin:0 auto}
 .dentro .cab{max-width:34rem;margin:0 auto;text-align:center}
 .dentro .num{color:var(--champ);display:block;margin-bottom:var(--s4)}
@@ -406,10 +406,18 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 @media(min-width:920px){.dentro h2{text-wrap:balance}}
 .dentro .lede{font-size:var(--t-body);line-height:1.6;color:#AAA59B;
   margin:var(--s4) 0 0}
-.folhas{display:grid;gap:clamp(32px,5vw,var(--s5));
-  margin-top:clamp(32px,5vw,var(--s6))}
-@media(min-width:760px){.folhas{grid-template-columns:repeat(3,1fr);
-  gap:var(--s4)}}
+/* No celular, três páginas A4 empilhadas somavam quase duas telas e meia só
+   nesta seção. Lado a lado, com encaixe, a prova é a mesma e o percurso
+   encurta. No desktop continuam as três colunas, que lá cabem. */
+.folhas{display:flex;gap:var(--s3);overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  margin-top:clamp(32px,5vw,var(--s6));padding-bottom:var(--s4)}
+.folhas figure{flex:0 0 min(74vw,300px);scroll-snap-align:center}
+@media(min-width:760px){
+  .folhas{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s4);
+    overflow:visible;padding-bottom:0}
+  .folhas figure{flex:none}
+}
 .folhas figure{margin:0}
 .folhas img{display:block;width:100%;height:auto;
   box-shadow:0 20px 44px -26px rgba(0,0,0,.9)}
@@ -431,7 +439,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    é a do Guia da Instrutora, copiada sem arredondar. A tira de páginas
    rola na horizontal e não usa script: o encaixe é do próprio navegador e
    a página continua sem um byte de JavaScript. */
-.modulos{background:var(--paper);padding:clamp(56px,9vw,104px) 0;
+.modulos{background:var(--paper);padding:clamp(80px,12vw,120px) 0;
   scroll-margin-top:76px}
 .modulos .col{max-width:1060px;margin:0 auto;padding:0 var(--s3)}
 .modulos .cab{max-width:34rem;margin:0 auto;text-align:center}
@@ -476,13 +484,13 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 @media(min-width:760px){.tira figure{flex:0 0 300px}
   .tira{scroll-snap-type:x proximity}}
 .tira img{display:block;width:100%;height:auto;background:#fff;
-  box-shadow:0 18px 40px -26px rgba(0,0,0,.55)}
+  box-shadow:0 20px 44px -26px rgba(0,0,0,.9)}
 .tira figcaption{margin-top:var(--s3)}
 .tira b{display:block;font-size:var(--t-label);font-weight:600;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--champ);
   line-height:1.4}
 .tira span{display:block;margin-top:var(--s2);font-size:14px;line-height:1.6;
-  color:var(--ink-2)}
+  color:#C4BEB2}
 .modulos .saida{display:flex;justify-content:center;
   margin-top:clamp(32px,5vw,var(--s6))}
 
@@ -492,7 +500,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    seção com um objeto ESCURO sobre fundo claro, no mesmo preto das capas do
    kit. O fundo volta para a areia da dobra e fecha o ciclo da página.
    Sem empilhamento de valor fictício: todo número aqui se confere. */
-.oferta{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+.oferta{background:var(--sand);padding:clamp(80px,12vw,120px) var(--s3);
   scroll-margin-top:76px}
 .oferta .col{max-width:1060px;margin:0 auto}
 .oferta .cab{max-width:34rem;margin:0 auto;text-align:center}
@@ -540,7 +548,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    aqui não é só "quem ela é": é como o material foi construído. Dizer que o
    plano saiu das turmas presenciais dela seria falso, e é verificável numa
    pergunta. O que é verdade, e nenhum concorrente faz, é ter fonte com data. */
-.quem{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
+.quem{background:var(--paper);padding:clamp(80px,12vw,120px) var(--s3);
   scroll-margin-top:76px}
 .quem .col{max-width:1060px;margin:0 auto;display:grid;
   gap:clamp(32px,5vw,var(--s6))}
@@ -566,14 +574,14 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
    disfarçadas, e escrever separado gera repetição. As três objeções que travam
    a decisão ficam em prosa; o resto vira pergunta curta em acordeão nativo,
    sem javascript. */
-.obj{background:var(--sand);padding:clamp(56px,9vw,104px) var(--s3);
+.obj{background:var(--sand);padding:clamp(80px,12vw,120px) var(--s3);
   scroll-margin-top:76px}
 .obj .col{max-width:1060px;margin:0 auto}
-.obj .cab,.faq .cab{max-width:34rem;margin:0 auto;text-align:center}
-.obj .num,.faq .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
-.obj h2,.faq h2{font-family:var(--display);font-weight:400;margin:0;
+.obj .cab{max-width:34rem;margin:0 auto;text-align:center}
+.obj .num{color:var(--gold-ink);display:block;margin-bottom:var(--s4)}
+.obj h2{font-family:var(--display);font-weight:400;margin:0;
   font-size:var(--d-xl);line-height:1.08;letter-spacing:-.005em;text-wrap:pretty}
-@media(min-width:920px){.obj h2,.faq h2{text-wrap:balance}}
+@media(min-width:920px){.obj h2{text-wrap:balance}}
 .trava{display:grid;gap:clamp(32px,5vw,var(--s5));
   margin-top:clamp(32px,5vw,var(--s6))}
 @media(min-width:860px){.trava{grid-template-columns:repeat(3,1fr);gap:var(--s5)}}
@@ -582,19 +590,18 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 .trava p{margin:0;font-size:15.5px;line-height:1.65;color:var(--ink-2)}
 .trava b{color:var(--ink);font-weight:600}
 
-.faq{background:var(--paper);padding:clamp(56px,9vw,104px) var(--s3);
-  scroll-margin-top:76px}
-.faq .col{max-width:720px;margin:0 auto}
-.faq .lista{margin-top:clamp(32px,5vw,var(--s6));border-top:1px solid #D8D3CA}
-.faq details{border-bottom:1px solid #D8D3CA}
-.faq summary{list-style:none;cursor:pointer;padding:var(--s4) 32px var(--s4) 0;
+
+
+.obj .lista{margin-top:clamp(32px,5vw,var(--s6));border-top:1px solid #D8D3CA}
+.obj details{border-bottom:1px solid #D8D3CA}
+.obj summary{list-style:none;cursor:pointer;padding:var(--s4) 32px var(--s4) 0;
   position:relative;font-size:16.5px;line-height:1.4;color:var(--ink);font-weight:500}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";position:absolute;right:4px;top:50%;
+.obj summary::-webkit-details-marker{display:none}
+.obj summary::after{content:"+";position:absolute;right:4px;top:50%;
   transform:translateY(-50%);font-size:20px;line-height:1;color:var(--gold-ink)}
-.faq details[open] summary::after{content:"\2212"}
-.faq summary:focus-visible{outline:2px solid var(--gold-ink);outline-offset:2px}
-.faq .resp{margin:0;padding:0 32px var(--s4) 0;font-size:15.5px;line-height:1.7;
+.obj details[open] summary::after{content:"\2212"}
+.obj summary:focus-visible{outline:2px solid var(--gold-ink);outline-offset:2px}
+.obj .resp{margin:0;padding:0 32px var(--s4) 0;font-size:15.5px;line-height:1.7;
   color:var(--ink-2)}
 
 /* --------------------------------------------------- 09 fechamento · rodapé
@@ -644,6 +651,24 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 .zap:active{transform:translateY(0)}
 .zap:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 @media(min-width:920px){.zap{width:58px;height:58px}.zap svg{width:27px;height:27px}}
+
+/* As perguntas deixaram de ser seção própria: viram o fecho de "Antes de
+   decidir", já que as duas respondem objeção. A lista mantém a medida estreita
+   de leitura mesmo dentro de uma coluna larga. */
+.perguntas{max-width:720px;margin:clamp(48px,7vw,80px) auto 0}
+.perguntas .rotulo{display:block;text-align:center;color:var(--gold-ink);
+  margin-bottom:var(--s4)}
+.obj .lista{margin-top:0;border-top:1px solid rgba(27,27,27,.18)}
+.obj details{border-bottom:1px solid rgba(27,27,27,.18)}
+
+/* O bloco da autora ocupava uma tela inteira de celular por causa da foto
+   quase quadrada. Recortada, ela continua apresentando a pessoa sem empurrar
+   a leitura para baixo. */
+@media(max-width:759px){
+  .quem .foto img{max-height:320px;object-fit:cover;object-position:50% 25%}
+}
+/* A tira de páginas respira mais e não encosta na borda da coluna. */
+.tira{padding-bottom:var(--s4)}
 </style>
 
 <header class="bar">
@@ -702,16 +727,6 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
   </div>
 </section>
 
-<section class="fatos" aria-label="O que vem no kit, em números">
-  <ul>
-    <li><b>154</b> páginas</li>
-    <li><b>6</b> arquivos para imprimir</li>
-    <li><b>2</b> editáveis no Canva</li>
-    <li><b>5</b> cursos possíveis</li>
-    <li><b>16</b> folhas de treino</li>
-    <li><b>10</b> modelos de certificado</li>
-  </ul>
-</section>
 
 <section class="dor" id="dor">
   <div class="col">
@@ -748,9 +763,22 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
     <div class="cab">
       <span class="num label">02 &nbsp;/&nbsp; O que resolve</span>
       <h2>Você não monta o curso. Escolhe qual vai dar.</h2>
-      <p class="lede">Os cinco módulos se combinam em cinco cursos, de 25 a 57
-        horas. O plano de cada aula já está escrito, hora a hora.</p>
+      <p class="lede">Toda turma começa igual, com fundamentos e design. O que muda
+        é a técnica que você escolhe ensinar depois, e cada escolha já tem o plano de
+        aula hora a hora no Guia da Instrutora.</p>
     </div>
+
+    <ul class="trilhas">
+      <li class="base"><span class="cur">Fundamentos e design</span><span class="mod">a base de toda turma</span><span class="hr">25 horas</span></li>
+      <li><span class="cur">mais henna</span><span class="mod">curso de design com henna</span><span class="hr">32 horas</span></li>
+      <li><span class="cur">mais brow lamination</span><span class="mod">curso de brow lamination</span><span class="hr">32 horas</span></li>
+      <li><span class="cur">mais micropigmentação Shadow</span><span class="mod">curso de micropigmentação</span><span class="hr">43 horas</span></li>
+      <li><span class="cur">as três juntas</span><span class="mod">curso de sobrancelha completa</span><span class="hr">57 horas</span></li>
+    </ul>
+
+    <p class="nota">O nome do curso e a carga horária que você imprime no certificado
+      saem daí. As três técnicas vêm nos mesmos seis arquivos, pelo mesmo R$47: cada
+      uma tem módulo na apostila e plano de aula próprio.</p>
 
     <div class="dupla">
       <div class="folha">
@@ -864,28 +892,15 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
   </div>
 </section>
 
-<section class="modulos" id="modulos">
+
+<section class="dentro" id="dentro">
   <div class="col">
     <div class="cab">
-      <span class="num label">04 &nbsp;/&nbsp; Os cinco cursos</span>
-      <h2>Cinco cursos possíveis. Cada um com a aula já escrita.</h2>
-      <p class="lede">Toda turma começa igual, com fundamentos e design. O que muda
-        é a técnica que você escolhe ensinar depois, e cada escolha já tem o plano de
-        aula hora a hora no Guia da Instrutora.</p>
+      <span class="num label">04 &nbsp;/&nbsp; Por dentro</span>
+      <h2>Cada página tem uma função na aula.</h2>
+      <p class="lede">A apostila que vai para a mão da aluna, e uma página de cada
+        um dos outros materiais, do jeito que saem da impressora.</p>
     </div>
-
-    <ul class="trilhas">
-      <li class="base"><span class="cur">Fundamentos e design</span><span class="mod">a base de toda turma</span><span class="hr">25 horas</span></li>
-      <li><span class="cur">mais henna</span><span class="mod">curso de design com henna</span><span class="hr">32 horas</span></li>
-      <li><span class="cur">mais brow lamination</span><span class="mod">curso de brow lamination</span><span class="hr">32 horas</span></li>
-      <li><span class="cur">mais micropigmentação Shadow</span><span class="mod">curso de micropigmentação</span><span class="hr">43 horas</span></li>
-      <li><span class="cur">as três juntas</span><span class="mod">curso de sobrancelha completa</span><span class="hr">57 horas</span></li>
-    </ul>
-
-    <p class="nota">O nome do curso e a carga horária que você imprime no certificado
-      saem daí. As três técnicas vêm nos mesmos seis arquivos, pelo mesmo R$47: brow
-      lamination e micropigmentação têm módulo na apostila e plano de aula próprio,
-      como a henna.</p>
 
     <div class="tira">
       <figure>
@@ -914,20 +929,6 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
       </figure>
     </div>
 
-    <div class="saida">
-      <a class="btn" href="#preco">Quero dar o meu curso &middot; R$47</a>
-    </div>
-  </div>
-</section>
-
-<section class="dentro" id="dentro">
-  <div class="col">
-    <div class="cab">
-      <span class="num label">05 &nbsp;/&nbsp; Por dentro</span>
-      <h2>Cada página tem uma função na aula.</h2>
-      <p class="lede">Uma página de cada mão: a sua, a da aluna e a da cliente dela,
-        do jeito que saem da impressora.</p>
-    </div>
     <div class="folhas">
       <figure>
         <img src="img/dentro-0.jpg" alt="Página 7 do Guia da Instrutora" width="780" height="1103" loading="lazy" decoding="async">
@@ -952,7 +953,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="oferta" id="oferta">
   <div class="col">
     <div class="cab">
-      <span class="num label">06 &nbsp;/&nbsp; A oferta</span>
+      <span class="num label">05 &nbsp;/&nbsp; A oferta</span>
       <h2>Uma compra. Todas as suas turmas.</h2>
       <p class="lede">Pagamento único, sem mensalidade e sem renovação.</p>
     </div>
@@ -991,18 +992,17 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
            alt="Fabrise Souza, especialista na técnica Shadow">
     </div>
     <div class="txt">
-      <span class="num label">07 &nbsp;/&nbsp; Quem assina</span>
+      <span class="num label">06 &nbsp;/&nbsp; Quem assina</span>
       <h2>Fabrise Souza</h2>
       <p class="cargo">Especialista na técnica Shadow e em micropigmentação de lábios,
         com estúdio em São Paulo.</p>
       <div class="rule"></div>
       <p class="t">Ela atende no estúdio dela e dá cursos presenciais. O Curso na
-        Pasta leva o nome dela e nasceu de uma pergunta prática: o que uma
-        profissional precisa ter em mãos para abrir a própria turma sem improvisar.</p>
+        Pasta nasceu de uma pergunta prática: o que uma profissional precisa ter em
+        mãos para abrir a própria turma sem improvisar.</p>
       <p class="t"><b>O conteúdo não foi escrito de memória.</b> Cada norma citada
-        no kit vem com artigo e data de conferência, as fontes estão listadas nas
-        duas últimas páginas do Guia da Instrutora, e onde as referências divergem
-        o material diz que divergem e adota a recomendação mais cautelosa.</p>
+        vem com artigo e data de conferência, e as fontes estão nas duas últimas
+        páginas do Guia da Instrutora.</p>
       <p class="ig">@fabrise_pmu &nbsp;·&nbsp; São Paulo</p>
     </div>
   </div>
@@ -1011,7 +1011,7 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
 <section class="obj" id="objecoes">
   <div class="col">
     <div class="cab">
-      <span class="num label">08 &nbsp;/&nbsp; Antes de decidir</span>
+      <span class="num label">07 &nbsp;/&nbsp; Antes de decidir</span>
       <h2>Três coisas que costumam travar.</h2>
     </div>
     <div class="trava">
@@ -1038,15 +1038,9 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
           ensinar o que já sabe fazer.</p>
       </div>
     </div>
-  </div>
-</section>
 
-<section class="faq" id="faq">
-  <div class="col">
-    <div class="cab">
-      <span class="num label">09 &nbsp;/&nbsp; Perguntas</span>
-      <h2>O que perguntam antes de comprar.</h2>
-    </div>
+    <div class="perguntas">
+      <span class="rotulo label">O que perguntam antes de comprar</span>
     <div class="lista">
         <details>
           <summary>Preciso saber usar o Canva?</summary>
@@ -1085,8 +1079,10 @@ h1 .it{display:block;font-style:italic;color:var(--gold);margin-top:.14em}
           <p class="resp">Você tem sete dias para abrir tudo e decidir. Se não servir, peça o reembolso e recebe o valor de volta.</p>
         </details>
     </div>
+    </div>
   </div>
 </section>
+
 
 <section class="fim" id="fim">
   <div class="col">
